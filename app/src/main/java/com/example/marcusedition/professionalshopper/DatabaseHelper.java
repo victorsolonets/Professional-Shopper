@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
             + " text not null, " + SHOP_NAME_COLUMN + " text not null, "
             + GOODS_PRICE_COLUMN + " float, " + GOODS_RATING_COLUMN + " float, "
             + GOODS_DESCRIPTION_COLUMN + " text not null, "
-            + GOODS_PHOTO_COLUMN + " text not null);";
+            + GOODS_PHOTO_COLUMN + " BLOB);";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

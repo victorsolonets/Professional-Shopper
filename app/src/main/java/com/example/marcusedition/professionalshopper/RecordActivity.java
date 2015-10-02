@@ -22,6 +22,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -41,6 +42,8 @@ public class RecordActivity extends Activity {
     private EditText editGoodsDescriprion;
     private RatingBar editGoodsRating;
     public static final int GALLERY_REQUEST = 1;
+    private Bitmap galleryPic = null;
+    private final int CAMERA_RESULT = 0;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -75,14 +78,25 @@ public class RecordActivity extends Activity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, CAMERA_RESULT);
                 changeImage.setText("Змінити фото");
             }
         });
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == CAMERA_RESULT) {
+//            Bitmap thumbnailBitmap = (Bitmap) data.getExtras().get("data");
+//            goodsPhoto.setImageBitmap(thumbnailBitmap);
+//        }
+//    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        Bitmap galleryPic = null;
+
         switch(requestCode) {
             case GALLERY_REQUEST:
                 if(resultCode == RESULT_OK){
@@ -112,14 +126,19 @@ public class RecordActivity extends Activity {
         String goodsPriceFromEdit = String.valueOf(editGoodsPrice.getText());
         String goodsRatingFromEdit = String.valueOf(editGoodsRating.getRating());
         String goodsDescriptionFromEdit = String.valueOf(editGoodsDescriprion.getText());
-        String goodsPhotoFromView = String.valueOf(goodsPhoto.toString());
+//        Blob goodsPhotoFromView = (Blob) goodsPhoto;
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        galleryPic.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] photo = baos.toByteArray();
+//        db.insertUserDetails(value1,value2, value3, photo,value2);
 
         newValues.put(DatabaseHelper.GOODS_NAME_COLUMN, goodsNameFromEdit);
         newValues.put(DatabaseHelper.SHOP_NAME_COLUMN, shopNameFromEdit);
         newValues.put(DatabaseHelper.GOODS_PRICE_COLUMN, goodsPriceFromEdit);
         newValues.put(DatabaseHelper.GOODS_RATING_COLUMN, goodsRatingFromEdit);
         newValues.put(DatabaseHelper.GOODS_DESCRIPTION_COLUMN, goodsDescriptionFromEdit);
-        newValues.put(DatabaseHelper.GOODS_PHOTO_COLUMN, goodsPhotoFromView);
+        newValues.put(DatabaseHelper.GOODS_PHOTO_COLUMN, photo);
 
         mSqLiteDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, newValues);
 
