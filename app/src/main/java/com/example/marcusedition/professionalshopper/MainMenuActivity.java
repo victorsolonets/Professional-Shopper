@@ -16,6 +16,7 @@ public class MainMenuActivity extends Activity {
 
     private Dialog dialog;
     private Intent intent;
+    private static int count = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState){

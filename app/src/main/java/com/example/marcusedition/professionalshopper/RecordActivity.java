@@ -51,7 +51,6 @@ public class RecordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record_activity);
         goodsPhoto = (ImageView)findViewById(R.id.goods_photo);
-        fromDB = (TextView)findViewById(R.id.fromDB);
         editGoodsName = (EditText)findViewById(R.id.goods_name);
         editGoodsPrice = (EditText)findViewById(R.id.goods_price);
         editShopName = (EditText)findViewById(R.id.shop_name);
@@ -65,15 +64,7 @@ public class RecordActivity extends Activity {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                WindowManager windowManager = (WindowManager) getApplicationContext()
-                        .getSystemService(Context.WINDOW_SERVICE);
-                windowManager.getDefaultDisplay().getMetrics(displaymetrics);
-                int height = displaymetrics.heightPixels;
-                int width = displaymetrics.widthPixels;
-                ViewGroup.LayoutParams params = goodsPhoto.getLayoutParams();
-                params.height = height / 3;
-                params.width = width / 2;
+                ViewGroup.LayoutParams params = getLayoutParams();
                 goodsPhoto.setLayoutParams(params);
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
@@ -83,6 +74,19 @@ public class RecordActivity extends Activity {
                 changeImage.setText("Змінити фото");
             }
         });
+    }
+
+    public ViewGroup.LayoutParams getLayoutParams() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) getApplicationContext()
+                .getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        int width = displaymetrics.widthPixels;
+        ViewGroup.LayoutParams params = goodsPhoto.getLayoutParams();
+        params.height = height / 3;
+        params.width = width / 2;
+        return params;
     }
 
 //    @Override

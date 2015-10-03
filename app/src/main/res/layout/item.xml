@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="3"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:src="@drawable/photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ImageView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="4"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:text="Назва товару"
+            android:textSize="30sp">
+        </TextView>
+        <TextView
+            android:id="@+id/tvDescr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="Предположим, вы создали специальную службу, которая отслеживает бездомных котов и сотрудники вашей организации привозят им подарки, а также гладят их. Пользователи, которые скачали ваше приложение, должны сфотографировать кота, а затем информация о месте съёмки и другие параметры попадают к вам в центр для обработки. Фотографирование котов - это часть вашего приложения. Не обязательно придумыватьвелосипед и работать напрямую с функциями камеры. У вас уже есть системное приложение Камера, с помощью которого можно быстро сделать фотографию и получить результат обратнов приложение.">
+        </TextView>
+</LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvRating"
+            android:focusableInTouchMode="false"/>
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="123 $"
+            android:textSize="15sp"
+            android:layout_marginRight="@dimen/big_text"
+            android:layout_gravity="bottom|right" />
+    </LinearLayout>
+
+    </LinearLayout>
