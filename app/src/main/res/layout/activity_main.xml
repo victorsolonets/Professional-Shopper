@@ -7,30 +7,18 @@
     android:background="@color/backgroung_main"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/money_bag"
-        android:id="@+id/imageView"
-        android:foregroundGravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/progressBar"
-        android:layout_alignEnd="@+id/progressBar"
-        android:paddingLeft="80dp"/>
-
     <TextView
         android:text="@string/app_name"
         android:textSize="@android:dimen/app_icon_size"
-        android:textStyle="italic"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/title"
         style="@android:style/Animation"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView" />
+        android:id="@+id/textView"
+        android:layout_above="@+id/progressBar"
+        android:layout_centerHorizontal="true" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
@@ -38,7 +26,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:foregroundGravity="center"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="133dp" />
 
 </RelativeLayout>

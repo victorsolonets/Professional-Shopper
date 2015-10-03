@@ -16,7 +16,7 @@ public class MainMenuActivity extends Activity {
 
     private Dialog dialog;
     private Intent intent;
-    private static int count = 0;
+    private static boolean flag = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -26,12 +26,17 @@ public class MainMenuActivity extends Activity {
 
     public void onClickButton(View view){
         if(view.getId() == R.id.button_view) {
-            intent = new Intent(getApplicationContext(),ViewActivity.class);
+            intent = new Intent(getApplicationContext(), ViewActivity.class);
         } else if (view.getId() == R.id.button_record) {
             intent = new Intent(getApplicationContext(), RecordActivity.class);
         } else if (view.getId() == R.id.button_delete) {
             showDialog(1);
             return;
+        }
+        if(intent.equals("null")) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(getApplicationContext(), "Дені", duration);
+            toast.show();
         }
         startActivity(intent);
     }

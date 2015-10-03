@@ -5,4 +5,9 @@
     <string name="view">Перегляд</string>
     <string name="record">+</string>
     <string name="delete">-</string>
+    <string-array name="filter_array">
+        <item>По Ціні</item>
+        <item>По Рейтингу</item>
+        <item>По Алфавіту</item>
+    </string-array>
 </resources>

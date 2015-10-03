@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,7 +44,6 @@ public class RecordActivity extends Activity {
     private RatingBar editGoodsRating;
     public static final int GALLERY_REQUEST = 1;
     private Bitmap galleryPic = null;
-    private final int CAMERA_RESULT = 0;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -64,7 +64,15 @@ public class RecordActivity extends Activity {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                ViewGroup.LayoutParams params = getLayoutParams();
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                WindowManager windowManager = (WindowManager) getApplicationContext()
+                        .getSystemService(Context.WINDOW_SERVICE);
+                windowManager.getDefaultDisplay().getMetrics(displaymetrics);
+                int height = displaymetrics.heightPixels;
+                int width = displaymetrics.widthPixels;
+                ViewGroup.LayoutParams params = goodsPhoto.getLayoutParams();
+                params.height = height / 3;
+                params.width = width / 2;
                 goodsPhoto.setLayoutParams(params);
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
@@ -74,19 +82,6 @@ public class RecordActivity extends Activity {
                 changeImage.setText("Змінити фото");
             }
         });
-    }
-
-    public ViewGroup.LayoutParams getLayoutParams() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) getApplicationContext()
-                .getSystemService(Context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(displaymetrics);
-        int height = displaymetrics.heightPixels;
-        int width = displaymetrics.widthPixels;
-        ViewGroup.LayoutParams params = goodsPhoto.getLayoutParams();
-        params.height = height / 3;
-        params.width = width / 2;
-        return params;
     }
 
 //    @Override
@@ -118,6 +113,7 @@ public class RecordActivity extends Activity {
                 }
         }
     }
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void onClickButton(View v) {
         System.out.println("in Click");
 
@@ -130,12 +126,22 @@ public class RecordActivity extends Activity {
         String goodsPriceFromEdit = String.valueOf(editGoodsPrice.getText());
         String goodsRatingFromEdit = String.valueOf(editGoodsRating.getRating());
         String goodsDescriptionFromEdit = String.valueOf(editGoodsDescriprion.getText());
-//        Blob goodsPhotoFromView = (Blob) goodsPhoto;
+
+        if (goodsNameFromEdit.equals("") || shopNameFromEdit.equals("") || goodsPriceFromEdit.equals("")
+                || goodsDescriptionFromEdit.equals("") || goodsRatingFromEdit.equals("")) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Заповніть всі поля", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        galleryPic.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        System.out.println(galleryPic);
+        if(galleryPic == null) {
+            galleryPic = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.photo);
+        }
+        galleryPic.compress(Bitmap.CompressFormat.JPEG, 25, baos);
         byte[] photo = baos.toByteArray();
-//        db.insertUserDetails(value1,value2, value3, photo,value2);
 
         newValues.put(DatabaseHelper.GOODS_NAME_COLUMN, goodsNameFromEdit);
         newValues.put(DatabaseHelper.SHOP_NAME_COLUMN, shopNameFromEdit);
@@ -146,42 +152,17 @@ public class RecordActivity extends Activity {
 
         mSqLiteDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, newValues);
 
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Новий запис додано", duration);
-
-        toast.show();
-
         editGoodsDescriprion.setText("");
         editGoodsPrice.setText("");
-        editGoodsRating.setNumStars(0);
+        editGoodsRating.setRating(0);
         editGoodsName.setText("");
         editShopName.setText("");
         goodsPhoto.setImageDrawable(getResources().getDrawable(R.drawable.photo));
 
-//        Cursor cursor = mSqLiteDatabase.query("goods", new String[]{
-//                        DatabaseHelper.GOODS_NAME_COLUMN,
-//                        DatabaseHelper.SHOP_NAME_COLUMN,
-//                        DatabaseHelper.GOODS_PRICE_COLUMN,
-//                        DatabaseHelper.GOODS_RATING,
-//                        DatabaseHelper.GOODS_DESCRIPTION_COLUMN},
-//                null, null,
-//                null, null, null) ;
-//
-//        cursor.moveToFirst();
-//
-//        String goodsName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.GOODS_NAME_COLUMN));
-//        String shopName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SHOP_NAME_COLUMN));
-//        String goodsDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.GOODS_DESCRIPTION_COLUMN));
-//        int goodsPrice = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.GOODS_PRICE_COLUMN));
-//        int goodsRating = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.GOODS_RATING));
-//        fromDB.setText("Товар : " + goodsName + "\nНазва магазину " + shopName
-//                + "\nОпис товару : " + goodsDescription + "\nЦіна товару : " +
-//                goodsPrice + "$" + "\nРейтинг товару : " + goodsRating);
-//
-//        // не забываем закрывать курсор
-//        cursor.close();
+        Toast toast = Toast.makeText(getApplicationContext(), "Новий запис додано", Toast.LENGTH_SHORT);
+        toast.show();
 
+        finish();
     }
 
 

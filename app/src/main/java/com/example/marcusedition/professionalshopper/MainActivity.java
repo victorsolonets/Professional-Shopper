@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
                         sleep(100);
                         logoTimer = logoTimer + 100;
                     }
-                    startActivity(new Intent(getApplicationContext(), MainMenuActivity.class));
+                    startActivity(new Intent(getApplicationContext(), ViewActivity.class));
                 }
                 catch (InterruptedException e)
                 {

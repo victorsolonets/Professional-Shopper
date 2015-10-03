@@ -9,20 +9,20 @@ public class Product {
 
     String title;
     String describe;
-    int price;
+    float price;
     Drawable image;
-    int rating;
+    float rating;
 
 
-    public Product (String _title, String _describe, int _price, Drawable _image, int _rating ) {
+    public Product (String _title, String _describe, String _price, Drawable _image, String _rating ) {
         title = _title;
         describe = _describe;
-        price = _price;
+        price = Float.valueOf(_price);
         image = _image;
-        rating = _rating;
+        rating = Float.valueOf(_rating);
     }
 
-    public Product (String _title, String _describe, int _price, int _rating ) {
+    public Product (String _title, String _describe, int _price, float _rating ) {
         title = _title;
         describe = _describe;
         price = _price;

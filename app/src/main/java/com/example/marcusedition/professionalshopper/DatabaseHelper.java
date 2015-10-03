@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
             + DATABASE_TABLE + " (" + BaseColumns._ID
             + " integer primary key autoincrement, " + GOODS_NAME_COLUMN
             + " text not null, " + SHOP_NAME_COLUMN + " text not null, "
-            + GOODS_PRICE_COLUMN + " float, " + GOODS_RATING_COLUMN + " float, "
+            + GOODS_PRICE_COLUMN + " text not null, " + GOODS_RATING_COLUMN + " text not null, "
             + GOODS_DESCRIPTION_COLUMN + " text not null, "
             + GOODS_PHOTO_COLUMN + " BLOB);";
 

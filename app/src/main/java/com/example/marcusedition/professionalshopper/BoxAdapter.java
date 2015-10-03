@@ -61,14 +61,14 @@ public class BoxAdapter extends BaseAdapter {
 
         // заполняем View в пункте списка данными из товаров: наименование, цена
         // и картинка
-        ((TextView) view.findViewById(R.id.tvDescr)).setText(p.describe);
+        ((TextView) view.findViewById(R.id.tvDescr)).setText("    " + p.describe);
         ((TextView) view.findViewById(R.id.tvTitle)).setText(p.title);
         ratingBar = ((RatingBar) view.findViewById(R.id.tvRating));
-        ratingBar.setNumStars(p.rating);
+        System.out.println();
         ratingBar.setRating(p.rating);
         ratingBar.setEnabled(false);
         TextView view1 = ((TextView) view.findViewById(R.id.tvPrice));
-                view1.setText(p.price + "грн");
+                view1.setText(p.price + " $");
         ImageView image = ((ImageView) view.findViewById(R.id.ivImage));
         image.setImageDrawable(p.image);
         ViewGroup.LayoutParams params = getLayoutParams(view1);
