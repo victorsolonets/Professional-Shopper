@@ -107,6 +107,16 @@ public class ViewActivity extends Activity{
                         DatabaseHelper.GOODS_PHOTO_COLUMN},
                 null, null,
                 null, null, null);
+        System.out.println(cursor.getPosition());
+        System.out.println(cursor.getCount());
+        System.out.println(cursor.getPosition() == (-1));
+        System.out.println(cursor.getCount() == (0));
+        if (cursor.getCount() == (0)) {
+            Toast.makeText(getBaseContext(), "База даних пуста", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), RecordActivity.class));
+            onStop();
+            return;
+        }
         ArrayList<Product> products = new ArrayList<>();
         while (cursor.moveToNext()) {
             String goodsName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.GOODS_NAME_COLUMN));
@@ -147,11 +157,11 @@ public class ViewActivity extends Activity{
     public void onClickButton(View view){
         if (view.getId() == R.id.but_record) {
             intent = new Intent(getApplicationContext(), RecordActivity.class);
-            onDestroy();
+//            onDestroy();
             startActivity(intent);
         } if (view.getId() == R.id.lvMain) {
             intent = new Intent(getApplicationContext(), MainActivity.class);
-            onDestroy();
+//            onDestroy();
             startActivity(intent);
         }
 

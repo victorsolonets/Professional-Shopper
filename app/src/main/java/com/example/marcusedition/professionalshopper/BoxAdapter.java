@@ -66,9 +66,10 @@ public class BoxAdapter extends BaseAdapter {
         ratingBar = ((RatingBar) view.findViewById(R.id.tvRating));
         System.out.println();
         ratingBar.setRating(p.rating);
+        ratingBar.setStepSize(0.5f);
         ratingBar.setEnabled(false);
         TextView view1 = ((TextView) view.findViewById(R.id.tvPrice));
-                view1.setText(p.price + " $");
+        view1.setText(""+p.price);
         ImageView image = ((ImageView) view.findViewById(R.id.ivImage));
         image.setImageDrawable(p.image);
         ViewGroup.LayoutParams params = getLayoutParams(view1);

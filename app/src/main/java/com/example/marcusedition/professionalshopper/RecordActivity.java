@@ -123,7 +123,7 @@ public class RecordActivity extends Activity {
 
         String goodsNameFromEdit = String.valueOf(editGoodsName.getText());
         String shopNameFromEdit = String.valueOf(editShopName.getText());
-        String goodsPriceFromEdit = String.valueOf(editGoodsPrice.getText());
+        String goodsPriceFromEdit = String.valueOf(editGoodsPrice.getText()+" грн");
         String goodsRatingFromEdit = String.valueOf(editGoodsRating.getRating());
         String goodsDescriptionFromEdit = String.valueOf(editGoodsDescriprion.getText());
 
@@ -140,9 +140,8 @@ public class RecordActivity extends Activity {
             galleryPic = BitmapFactory.decodeResource(getResources(),
                     R.drawable.photo);
         }
-        galleryPic.compress(Bitmap.CompressFormat.JPEG, 25, baos);
+        galleryPic.compress(Bitmap.CompressFormat.JPEG, 5, baos);
         byte[] photo = baos.toByteArray();
-
         newValues.put(DatabaseHelper.GOODS_NAME_COLUMN, goodsNameFromEdit);
         newValues.put(DatabaseHelper.SHOP_NAME_COLUMN, shopNameFromEdit);
         newValues.put(DatabaseHelper.GOODS_PRICE_COLUMN, goodsPriceFromEdit);
@@ -161,9 +160,13 @@ public class RecordActivity extends Activity {
 
         Toast toast = Toast.makeText(getApplicationContext(), "Новий запис додано", Toast.LENGTH_SHORT);
         toast.show();
+//        finish();
 
-        finish();
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
 }

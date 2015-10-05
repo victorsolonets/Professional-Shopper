@@ -30,7 +30,8 @@
             android:textStyle="bold"
             android:text="Назва товару"
             android:textSize="30sp"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:gravity="center">
         </TextView>
         <TextView
             android:id="@+id/tvDescr"
@@ -44,25 +45,27 @@
     </LinearLayout>
 
     <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="286dp"
+    android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <RatingBar
-            android:layout_width="wrap_content"
+            android:layout_width="251dp"
             android:layout_height="wrap_content"
             android:id="@+id/tvRating"
-            android:focusableInTouchMode="false"
-            android:paddingLeft="10dp"/>
+            android:focusableInTouchMode="true"
+            android:paddingLeft="10dp"
+            />
 
         <TextView
             android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="123 $"
-            android:textSize="15sp"
-            android:gravity="right"
-            android:layout_gravity="right"/>
+            android:textSize="30sp"
+            android:gravity="left"
+            android:layout_gravity="left"/>
     </LinearLayout>
 
     </LinearLayout>
