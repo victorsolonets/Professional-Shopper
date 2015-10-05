@@ -9,7 +9,7 @@ public class Product {
 
     String title;
     String describe;
-    String price;
+    float price;
     Drawable image;
     float rating;
 
@@ -17,15 +17,15 @@ public class Product {
     public Product (String _title, String _describe, String _price, Drawable _image, String _rating ) {
         title = _title;
         describe = _describe;
-        price = _price;
+        price = Float.valueOf(_price);
         image = _image;
         rating = Float.valueOf(_rating);
     }
 
-    public Product (String _title, String _describe, String _price, float _rating ) {
+    public Product (String _title, String _describe, String _price, String _rating ) {
         title = _title;
         describe = _describe;
-        price = _price;
-        rating = _rating;
+        price = Float.valueOf(_price);
+        rating = Float.valueOf(_rating);
     }
 }

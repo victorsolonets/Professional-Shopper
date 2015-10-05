@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -43,7 +45,9 @@ public class RecordActivity extends Activity {
     private EditText editGoodsDescriprion;
     private RatingBar editGoodsRating;
     public static final int GALLERY_REQUEST = 1;
+    public static final int CAMERA_RESULT = 0;
     private Bitmap galleryPic = null;
+    public static int COUNT = 0;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -59,7 +63,27 @@ public class RecordActivity extends Activity {
         changeImage = (Button)findViewById(R.id.change_photo_button);
         mDatabaseHelper = new DatabaseHelper(this, DatabaseHelper.DATABASE_NAME, null, 1);
         mSqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-
+        goodsPhoto.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                WindowManager windowManager = (WindowManager) getApplicationContext()
+                        .getSystemService(Context.WINDOW_SERVICE);
+                windowManager.getDefaultDisplay().getMetrics(displaymetrics);
+                int height = displaymetrics.heightPixels;
+                int width = displaymetrics.widthPixels;
+                ViewGroup.LayoutParams params = goodsPhoto.getLayoutParams();
+                params.height = height / 3;
+                params.width = width / 2;
+                goodsPhoto.setLayoutParams(params);
+//                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+//                photoPickerIntent.setType("image/*");
+//                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, CAMERA_RESULT);
+                return true;
+            }
+        });
         changeImage.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
@@ -79,7 +103,6 @@ public class RecordActivity extends Activity {
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
 //                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                startActivityForResult(cameraIntent, CAMERA_RESULT);
-                changeImage.setText("Змінити фото");
             }
         });
     }
@@ -106,11 +129,14 @@ public class RecordActivity extends Activity {
                     } catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                }
+                } else if (requestCode == CAMERA_RESULT) {
+                    System.out.println("Camera");
+        }
         }
     }
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -123,12 +149,12 @@ public class RecordActivity extends Activity {
 
         String goodsNameFromEdit = String.valueOf(editGoodsName.getText());
         String shopNameFromEdit = String.valueOf(editShopName.getText());
-        String goodsPriceFromEdit = String.valueOf(editGoodsPrice.getText()+" грн");
+        String goodsPriceFromEdit = String.valueOf(editGoodsPrice.getText());
         String goodsRatingFromEdit = String.valueOf(editGoodsRating.getRating());
         String goodsDescriptionFromEdit = String.valueOf(editGoodsDescriprion.getText());
 
         if (goodsNameFromEdit.equals("") || shopNameFromEdit.equals("") || goodsPriceFromEdit.equals("")
-                || goodsDescriptionFromEdit.equals("") || goodsRatingFromEdit.equals("")) {
+                || goodsDescriptionFromEdit.equals("")) {
             Toast toast = Toast.makeText(getApplicationContext(), "Заповніть всі поля", Toast.LENGTH_SHORT);
             toast.show();
             return;
@@ -140,14 +166,31 @@ public class RecordActivity extends Activity {
             galleryPic = BitmapFactory.decodeResource(getResources(),
                     R.drawable.photo);
         }
-        galleryPic.compress(Bitmap.CompressFormat.JPEG, 5, baos);
-        byte[] photo = baos.toByteArray();
+        galleryPic.compress(Bitmap.CompressFormat.PNG, 50, baos);
+
+//        byte[] photo = baos.toByteArray();
+
         newValues.put(DatabaseHelper.GOODS_NAME_COLUMN, goodsNameFromEdit);
         newValues.put(DatabaseHelper.SHOP_NAME_COLUMN, shopNameFromEdit);
         newValues.put(DatabaseHelper.GOODS_PRICE_COLUMN, goodsPriceFromEdit);
         newValues.put(DatabaseHelper.GOODS_RATING_COLUMN, goodsRatingFromEdit);
         newValues.put(DatabaseHelper.GOODS_DESCRIPTION_COLUMN, goodsDescriptionFromEdit);
-        newValues.put(DatabaseHelper.GOODS_PHOTO_COLUMN, photo);
+
+        Cursor cursor = mSqLiteDatabase.query(DatabaseHelper.DATABASE_TABLE, new String[]{
+                        DatabaseHelper.GOODS_NAME_COLUMN,
+                        DatabaseHelper.SHOP_NAME_COLUMN,
+                        DatabaseHelper.GOODS_PRICE_COLUMN,
+                        DatabaseHelper.GOODS_RATING_COLUMN,
+                        DatabaseHelper.GOODS_DESCRIPTION_COLUMN},
+                null, null,
+                null, null, null);
+
+        System.out.println("Cursor = " + cursor.getCount());
+        Save lImage = new Save();
+        lImage.saveImage(this,galleryPic,""+cursor.getCount());
+//       saveAsImage(photo);
+
+//        galleryPic.compress(Bitmap.CompressFormat.PNG, 50, outputStream);// пишем битмап на PNG с качеством 50%
 
         mSqLiteDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, newValues);
 
@@ -160,13 +203,9 @@ public class RecordActivity extends Activity {
 
         Toast toast = Toast.makeText(getApplicationContext(), "Новий запис додано", Toast.LENGTH_SHORT);
         toast.show();
+        COUNT++;
 //        finish();
-
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-    }
+
 }
