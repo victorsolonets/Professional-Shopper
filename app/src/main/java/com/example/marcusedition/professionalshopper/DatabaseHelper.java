@@ -11,7 +11,7 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
 
-    public static final String DATABASE_NAME = "newBD.db";
+    public static final String DATABASE_NAME = "shoper.db";
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_TABLE = "goods";
 
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
             + DATABASE_TABLE + " (" + BaseColumns._ID
             + " integer primary key autoincrement, " + GOODS_NAME_COLUMN
             + " text not null, " + SHOP_NAME_COLUMN + " text not null, "
-            + GOODS_PRICE_COLUMN + " text not null, " + GOODS_RATING_COLUMN + " text not null, "
+            + GOODS_PRICE_COLUMN + " real, " + GOODS_RATING_COLUMN + " real, "
             + GOODS_DESCRIPTION_COLUMN + " text not null, "
             + GOODS_PHOTO_COLUMN + " BLOB);";
 
@@ -55,4 +55,5 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
         // Создаём новую таблицу
         onCreate(db);
     }
+
 }

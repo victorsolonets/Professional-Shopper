@@ -6,8 +6,11 @@
     <string name="record">+</string>
     <string name="delete">-</string>
     <string-array name="filter_array">
+        <item>По Додаванню</item>
         <item>По Ціні</item>
         <item>По Рейтингу</item>
         <item>По Алфавіту</item>
     </string-array>
+    <string name="search_label">Search</string>
+    <string name="search_hint">Search Names</string>
 </resources>
