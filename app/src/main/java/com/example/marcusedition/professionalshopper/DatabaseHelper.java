@@ -21,6 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
     public static final String GOODS_DESCRIPTION_COLUMN = "goodsDescription";
     public static final String GOODS_RATING_COLUMN = "goodsRating";
     public static final String GOODS_PHOTO_COLUMN = "goodsPhoto";
+    public static final String GOODS_DATE = "goodsDate";
 
     private static final String DATABASE_CREATE_SCRIPT = "create table "
             + DATABASE_TABLE + " (" + BaseColumns._ID

@@ -2,6 +2,9 @@ package com.example.marcusedition.professionalshopper;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -35,9 +38,8 @@ public class ViewActivity extends Activity{
     private Intent intent;
     private ByteArrayInputStream imageStream;
     private Drawable drawableImage;
-    private SearchHelper mSearchHelper;
     private ArrayList<Product> products;
-    private Cursor cursor;
+    private Dialog dialog;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -49,6 +51,23 @@ public class ViewActivity extends Activity{
         setFilters();
     }
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Вихід")
+                .setMessage("Ви впевнені, що хочете вийти?")
+                .setPositiveButton("Так", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("Ні", null)
+                .show();
+    }
 
     private void initializationLocalFields() {
         mSpinner = (Spinner)findViewById(R.id.spinner);
