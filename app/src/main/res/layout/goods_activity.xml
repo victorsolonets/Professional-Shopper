@@ -45,6 +45,8 @@
         android:saveEnabled="false"
         android:foregroundGravity="right"
         android:paddingLeft="15dp"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +75,13 @@
         android:layout_height="wrap_content"
         android:paddingLeft="15dp"
         android:id="@+id/AllDescr" />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ChapterGoodsDate"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:textColor="@android:color/holo_red_dark"/>
 
 
 

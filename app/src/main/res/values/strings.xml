@@ -6,7 +6,7 @@
     <string name="record">+</string>
     <string name="delete">-</string>
     <string-array name="filter_array">
-        <item>По Додаванню</item>
+        <item>По Даті</item>
         <item>По Ціні</item>
         <item>По Рейтингу</item>
         <item>По Алфавіту</item>
