@@ -81,6 +81,7 @@
                 android:layout_weight="23"
                 android:id="@+id/Date"
                 android:layout_gravity="bottom"
+                android:paddingRight="10dp"
                 android:gravity="right"/>
         </LinearLayout>
     </LinearLayout>

@@ -31,7 +31,7 @@ public class GoodsActivity extends Activity {
         mRating = (RatingBar)findViewById(R.id.ChapterGoodsRating);
         mShop = (TextView)findViewById(R.id.ChapterShopView);
         mDescr = (TextView) findViewById(R.id.AllDescr);
-        mDate = (TextView) findViewById(R.id.Date);
+        mDate = (TextView) findViewById(R.id.ChapterGoodsDate);
 
         mRating.setEnabled(false);
 

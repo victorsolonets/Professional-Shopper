@@ -97,6 +97,7 @@ public class BoxAdapter extends BaseAdapter {
                 extras.putParcelable("goodsPhoto", imageBit);
                 intent.putExtras(extras);
                 intent.putExtra("goodsRating", p.rating);
+                intent.putExtra("Date",p.date);
                 ctx.startActivity(intent);
             }
         });
