@@ -180,7 +180,7 @@ public class ViewActivity extends Activity {
                         break;
                     case 0:
                         try {
-                            orderByFilter(DatabaseHelper._ID, "");
+                            orderByFilter(DatabaseHelper.GOODS_DATE, "");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
