@@ -11,7 +11,7 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
 
-    public static final String DATABASE_NAME = "shoper.db";
+    public static final String DATABASE_NAME = "eeshop.db";
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_TABLE = "goods";
 
@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
             + " text not null, " + SHOP_NAME_COLUMN + " text not null, "
             + GOODS_PRICE_COLUMN + " real, " + GOODS_RATING_COLUMN + " real, "
             + GOODS_DESCRIPTION_COLUMN + " text not null, "
-            + GOODS_PHOTO_COLUMN + " BLOB);";
+            + GOODS_PHOTO_COLUMN + " BLOB, " + GOODS_DATE + " text not null);";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

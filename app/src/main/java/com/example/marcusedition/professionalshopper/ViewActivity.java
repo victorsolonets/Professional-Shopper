@@ -100,8 +100,9 @@ public class ViewActivity extends Activity {
         String query = "SELECT " + DatabaseHelper._ID + "," +
                 DatabaseHelper.GOODS_NAME_COLUMN + "," +DatabaseHelper.SHOP_NAME_COLUMN + ","
                 + DatabaseHelper.GOODS_PRICE_COLUMN + "," + DatabaseHelper.GOODS_DESCRIPTION_COLUMN
-                + "," +DatabaseHelper.GOODS_RATING_COLUMN + "," +DatabaseHelper.GOODS_PHOTO_COLUMN
-                +  " from " + DatabaseHelper.DATABASE_TABLE + " ORDER BY " + order +""+ desk +";";
+                + "," +DatabaseHelper.GOODS_RATING_COLUMN + "," +DatabaseHelper.GOODS_PHOTO_COLUMN +
+                "," + DatabaseHelper.GOODS_DATE +  " from " + DatabaseHelper.DATABASE_TABLE
+                + " ORDER BY " + order +""+ desk +";";
         SQLiteDatabase mDB = mDatabaseHelper.getWritableDatabase();
         Cursor mCursor = mDB.rawQuery(query, null);
         if(mCursor != null) {
@@ -120,8 +121,9 @@ public class ViewActivity extends Activity {
         String query = "SELECT " + DatabaseHelper._ID + "," +
                 DatabaseHelper.GOODS_NAME_COLUMN + "," +DatabaseHelper.SHOP_NAME_COLUMN + ","
                 + DatabaseHelper.GOODS_PRICE_COLUMN + "," + DatabaseHelper.GOODS_DESCRIPTION_COLUMN
-                + "," +DatabaseHelper.GOODS_RATING_COLUMN + "," +DatabaseHelper.GOODS_PHOTO_COLUMN
-                +  " from " + DatabaseHelper.DATABASE_TABLE + " where " + DatabaseHelper.GOODS_NAME_COLUMN
+                + "," +DatabaseHelper.GOODS_RATING_COLUMN + "," +DatabaseHelper.GOODS_PHOTO_COLUMN +
+                "," + DatabaseHelper.GOODS_DATE +  " from " + DatabaseHelper.DATABASE_TABLE
+                + " where " + DatabaseHelper.GOODS_NAME_COLUMN
                 + " LIKE "+"\"" + inputText + "%\";";
         SQLiteDatabase mDB = mDatabaseHelper.getWritableDatabase();
         Cursor mCursor = mDB.rawQuery(query, null);
@@ -140,7 +142,6 @@ public class ViewActivity extends Activity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setFilters() {
@@ -214,9 +215,6 @@ public class ViewActivity extends Activity {
         if (isDataBaseEmpty(cursor)) return;
         products = new ArrayList<>();
         readFromDataBase(cursor, products);
-        /**
-         * Розміщення елементів в контейнері
-         */
         boxAdapter = new BoxAdapter(this, products);
         lvMain = (ListView) findViewById(R.id.lvMain);
         lvMain.setAdapter(boxAdapter);
@@ -242,7 +240,8 @@ public class ViewActivity extends Activity {
                             DatabaseHelper.GOODS_PRICE_COLUMN,
                             DatabaseHelper.GOODS_RATING_COLUMN,
                             DatabaseHelper.GOODS_DESCRIPTION_COLUMN,
-                            DatabaseHelper.GOODS_PHOTO_COLUMN},
+                            DatabaseHelper.GOODS_PHOTO_COLUMN,
+                            DatabaseHelper.GOODS_DATE },
                     null, null,
                     null, null, null);
     }
@@ -255,9 +254,10 @@ public class ViewActivity extends Activity {
             Float goodsPrice = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.GOODS_PRICE_COLUMN));
             Float  goodsRating = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.GOODS_RATING_COLUMN));
             byte[] photo = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.GOODS_PHOTO_COLUMN));
+            String date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.GOODS_DATE));
             imageStream = new ByteArrayInputStream(photo);
             drawableImage = Drawable.createFromStream(imageStream, "");
-            products.add(new Product(goodsName, goodsDescription, goodsPrice, drawableImage, goodsRating, shopName));
+            products.add(new Product(goodsName, goodsDescription, goodsPrice, drawableImage, goodsRating, shopName, date));
         }
     }
 
@@ -265,27 +265,7 @@ public class ViewActivity extends Activity {
         if (view.getId() == R.id.but_record) {
             intent = new Intent(getApplicationContext(), RecordActivity.class);
             startActivity(intent);
-//        } if(view.getId() == R.id.buttonInfo) {
-//            try {
-//                lvMain.
-//                System.out.println("Mark = " + textInfo.getText());
-//                Cursor cursor = getCursor();
-//                intent = new Intent(this, GoodsActivity.class);
-//                intent.putExtra("goodsName", "Мишка");
-//                intent.putExtra("goodsPrice", 41.41f);
-//                intent.putExtra("goodsDescr", "Це моя мишка");
-//                intent.putExtra("shopName", "Цитрус");
-//                intent.putExtra("goodsPhoto", String.valueOf(getResources().getDrawable(R.drawable.photo)));
-//                intent.putExtra("goodsRating",3.4f);
-//                startActivity(intent);
-//            } catch (Exception ex) {
-////                System.out.println(ex.);
-//                ex.printStackTrace();
-//                Toast.makeText(this,"ІДІ НАХУЙ",Toast.LENGTH_SHORT).show();
-//            }
         }
-
     }
-
 }
 

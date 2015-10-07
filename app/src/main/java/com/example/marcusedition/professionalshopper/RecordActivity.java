@@ -22,6 +22,9 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by victor on 02.10.15.
@@ -130,8 +133,15 @@ public class RecordActivity extends Activity {
         newValues.put(DatabaseHelper.GOODS_RATING_COLUMN, goodsRatingFromEdit);
         newValues.put(DatabaseHelper.GOODS_DESCRIPTION_COLUMN, goodsDescriptionFromEdit);
         newValues.put(DatabaseHelper.GOODS_PHOTO_COLUMN, photo);
-
+        newValues.put(DatabaseHelper.GOODS_DATE, getDateTime());
         mSqLiteDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, newValues);
+    }
+
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     private boolean checkToEmptyText(String goodsNameFromEdit, String shopNameFromEdit, String goodsPriceFromEdit, String goodsDescriptionFromEdit) {

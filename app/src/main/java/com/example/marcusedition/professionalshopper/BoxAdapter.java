@@ -78,7 +78,7 @@ public class BoxAdapter extends BaseAdapter {
         tvPrice.setText(p.price + "$");
         final ImageView image = ((ImageView) view.findViewById(R.id.ivImage));
         image.setImageDrawable(p.image);
-
+        ((TextView) view.findViewById(R.id.Date)).setText(p.date);
         ViewGroup.LayoutParams params = getLayoutParams(tvPrice);
         image.setLayoutParams(params);
 

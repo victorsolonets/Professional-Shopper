@@ -18,6 +18,7 @@ public class GoodsActivity extends Activity {
     private RatingBar mRating;
     private TextView mShop;
     private TextView mDescr;
+    private TextView mDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,37 +31,25 @@ public class GoodsActivity extends Activity {
         mRating = (RatingBar)findViewById(R.id.ChapterGoodsRating);
         mShop = (TextView)findViewById(R.id.ChapterShopView);
         mDescr = (TextView) findViewById(R.id.AllDescr);
+        mDate = (TextView) findViewById(R.id.Date);
 
         mRating.setEnabled(false);
 
         String title = getIntent().getStringExtra("goodsName");
         Bundle extras = getIntent().getExtras();
         Bitmap bmp = (Bitmap) extras.getParcelable("goodsPhoto");
-
         mPhoto.setImageBitmap(bmp);
         float price = getIntent().getFloatExtra("goodsPrice", 0.0f);
         float rating = getIntent().getFloatExtra("goodsRating",0.0f);
         String descr = getIntent().getStringExtra("goodsDescr");
         String shop = getIntent().getStringExtra("shopName");
+        String date = getIntent().getStringExtra("Date");
 
         mTitle.setText(title);
-//        mPhoto.setImageDrawable(Drawable.createFromPath(photo));
         mPrice.setText(String.valueOf(price) + " $");
         mRating.setRating(rating);
         mShop.setText(shop);
-        mDescr.setText(descr);
-
-//        intent.putExtra("goodsName", "Мишка");
-//        intent.putExtra("goodsPrice", 41);
-//        intent.putExtra("goodsDescr", "Це моя мишка");
-//        intent.putExtra("shopName", "Цитрус");
-//        intent.putExtra("goodsPhoto", String.valueOf(getResources().getDrawable(R.drawable.photo)));
-//        String numbChapter = String.valueOf(getIntent().getExtras().getInt("numbChapter"));
-//        System.out.println("sd = "+numbChapter);
-
-
-        /**
-         * Отсилка с бази даних всех значений и прием в соответствующие поля страници.
-         */
+        mDescr.setText("   "+descr);
+        mDate.setText(date);
     }
 }

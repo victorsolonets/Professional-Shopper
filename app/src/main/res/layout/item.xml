@@ -50,7 +50,8 @@
     <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="110dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <RatingBar
             android:layout_width="250dp"
@@ -73,7 +74,16 @@
             android:gravity="left"
             android:layout_gravity="left|center_horizontal"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="06-10-15 20:30:35"
+                android:layout_weight="23"
+                android:id="@+id/Date"
+                android:layout_gravity="bottom"
+                android:gravity="right"/>
         </LinearLayout>
     </LinearLayout>
+
 
     </LinearLayout>
