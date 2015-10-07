@@ -5,7 +5,10 @@ package com.example.marcusedition.professionalshopper;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,9 @@ public class BoxAdapter extends BaseAdapter {
     private Context ctx;
     private LayoutInflater lInflater;
     private ArrayList<Product> mListItems;
+    String [] result;
+    Context context;
+    int [] imageId;
 
     public BoxAdapter(Context context, ArrayList<Product> products) {
         ctx = context;
@@ -51,37 +57,50 @@ public class BoxAdapter extends BaseAdapter {
 
     // пункт списка
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // используем созданные, но не используемые view
-        ViewHolder holder;
         View view = convertView;
         if (view == null) {
-            holder = new ViewHolder();
             view = lInflater.inflate(R.layout.item, parent, false);
-            holder.itemName = (TextView)view.findViewById(R.id.tvTitle);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
         }
-//        String stringItem = mListItems.get(position);
 
-        Product p = getProduct(position);
+        final Product p = getProduct(position);
 
         // заполняем View в пункте списка данными из товаров: наименование, цена
         // и картинка
         ((TextView) view.findViewById(R.id.tvDescr)).setText("    " + p.describe);
         ((TextView) view.findViewById(R.id.tvTitle)).setText(p.title);
         RatingBar ratingBar = ((RatingBar) view.findViewById(R.id.tvRating));
-        System.out.println();
         ratingBar.setRating(p.rating);
         ratingBar.setStepSize(0.5f);
         ratingBar.setEnabled(false);
-        TextView view1 = ((TextView) view.findViewById(R.id.tvPrice));
-        view1.setText(p.price + "$");
-        ImageView image = ((ImageView) view.findViewById(R.id.ivImage));
+        TextView tvPrice = ((TextView) view.findViewById(R.id.tvPrice));
+        tvPrice.setText(p.price + "$");
+        final ImageView image = ((ImageView) view.findViewById(R.id.ivImage));
         image.setImageDrawable(p.image);
-        ViewGroup.LayoutParams params = getLayoutParams(view1);
+
+        ViewGroup.LayoutParams params = getLayoutParams(tvPrice);
         image.setLayoutParams(params);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(ctx, GoodsActivity.class);
+                intent.putExtra("goodsName", p.title);
+                intent.putExtra("goodsPrice", p.price);
+                intent.putExtra("goodsDescr", p.describe);
+                intent.putExtra("shopName", p.shop);
+                Bundle extras = new Bundle();
+                image.buildDrawingCache();
+                Bitmap imageBit = image.getDrawingCache();
+                extras.putParcelable("goodsPhoto", imageBit);
+                intent.putExtras(extras);
+                intent.putExtra("goodsRating", p.rating);
+                ctx.startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -108,7 +127,4 @@ public class BoxAdapter extends BaseAdapter {
         return params;
     }
 
-    private static class ViewHolder {
-        protected TextView itemName;
-    }
 }

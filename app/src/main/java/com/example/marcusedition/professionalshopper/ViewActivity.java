@@ -3,7 +3,6 @@ package com.example.marcusedition.professionalshopper;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,9 +14,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
@@ -27,7 +28,8 @@ import java.util.ArrayList;
 /**
  * Created by victor on 02.10.15.
  */
-public class ViewActivity extends Activity{
+
+public class ViewActivity extends Activity {
 
     private SQLiteDatabase mSqLiteDatabase;
     private ListView lvMain;
@@ -39,16 +41,34 @@ public class ViewActivity extends Activity{
     private ByteArrayInputStream imageStream;
     private Drawable drawableImage;
     private ArrayList<Product> products;
-    private Dialog dialog;
+    private Button buttonItem;
+    private TextView textInfo;
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_activity);
         initializationLocalFields();
+        System.out.println(buttonItem);
         fillAllItems();
-        setFilters();
+        try {
+            lvMain.isHovered();
+            setFilters();
+        } catch (Exception ex) {
+        }
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        fillAllItems();
+        try {
+            lvMain.isHovered();
+            setFilters();
+        } catch (Exception ex) {}
+
     }
 
     @Override
@@ -76,13 +96,12 @@ public class ViewActivity extends Activity{
         mSearchView = (SearchView) findViewById(R.id.searchView);
     }
 
-    public Cursor orderByFilter(String order) throws SQLException {
-
-        String query = "SELECT " +
+    public Cursor orderByFilter(String order, String desk) throws SQLException {
+        String query = "SELECT " + DatabaseHelper._ID + "," +
                 DatabaseHelper.GOODS_NAME_COLUMN + "," +DatabaseHelper.SHOP_NAME_COLUMN + ","
                 + DatabaseHelper.GOODS_PRICE_COLUMN + "," + DatabaseHelper.GOODS_DESCRIPTION_COLUMN
                 + "," +DatabaseHelper.GOODS_RATING_COLUMN + "," +DatabaseHelper.GOODS_PHOTO_COLUMN
-                +  " from " + DatabaseHelper.DATABASE_TABLE + " ORDER BY " + order + ";";
+                +  " from " + DatabaseHelper.DATABASE_TABLE + " ORDER BY " + order +""+ desk +";";
         SQLiteDatabase mDB = mDatabaseHelper.getWritableDatabase();
         Cursor mCursor = mDB.rawQuery(query, null);
         if(mCursor != null) {
@@ -90,14 +109,15 @@ public class ViewActivity extends Activity{
             readFromDataBase(mCursor, products);
             boxAdapter = new BoxAdapter(this, products);
             lvMain.setAdapter(boxAdapter);
+            lvMain.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            lvMain.setItemsCanFocus(false);
             mCursor.close();
         }
         return mCursor;
     }
 
     public Cursor searchByInputText(String inputText) throws SQLException {
-
-        String query = "SELECT " +
+        String query = "SELECT " + DatabaseHelper._ID + "," +
                 DatabaseHelper.GOODS_NAME_COLUMN + "," +DatabaseHelper.SHOP_NAME_COLUMN + ","
                 + DatabaseHelper.GOODS_PRICE_COLUMN + "," + DatabaseHelper.GOODS_DESCRIPTION_COLUMN
                 + "," +DatabaseHelper.GOODS_RATING_COLUMN + "," +DatabaseHelper.GOODS_PHOTO_COLUMN
@@ -121,14 +141,8 @@ public class ViewActivity extends Activity{
         return true;
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        fillAllItems();
 
-        setFilters();
-    }
-
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setFilters() {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -158,28 +172,28 @@ public class ViewActivity extends Activity{
                 switch (position) {
                     case 1:
                         try {
-                            orderByFilter(DatabaseHelper.GOODS_PRICE_COLUMN);
+                            orderByFilter(DatabaseHelper.GOODS_PRICE_COLUMN, "");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                         break;
                     case 0:
                         try {
-                            orderByFilter(DatabaseHelper._ID);
+                            orderByFilter(DatabaseHelper._ID, "");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                         break;
                     case 2:
                         try {
-                            orderByFilter(DatabaseHelper.GOODS_RATING_COLUMN);
+                            orderByFilter(DatabaseHelper.GOODS_RATING_COLUMN, " DESC");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                         break;
                     case 3:
                         try {
-                            orderByFilter(DatabaseHelper.GOODS_NAME_COLUMN);
+                            orderByFilter(DatabaseHelper.GOODS_NAME_COLUMN, "");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -192,6 +206,7 @@ public class ViewActivity extends Activity{
 
             }
         });
+
     }
 
     private void fillAllItems() {
@@ -221,6 +236,7 @@ public class ViewActivity extends Activity{
 
     private Cursor getCursor() {
         return mSqLiteDatabase.query(DatabaseHelper.DATABASE_TABLE, new String[]{
+                            DatabaseHelper._ID,
                             DatabaseHelper.GOODS_NAME_COLUMN,
                             DatabaseHelper.SHOP_NAME_COLUMN,
                             DatabaseHelper.GOODS_PRICE_COLUMN,
@@ -231,17 +247,17 @@ public class ViewActivity extends Activity{
                     null, null, null);
     }
 
-    private void readFromDataBase(Cursor cursor, ArrayList<Product> products) {
+    private void readFromDataBase(final Cursor cursor, ArrayList<Product> products) {
         while (cursor.moveToNext()) {
             String goodsName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.GOODS_NAME_COLUMN));
             String shopName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.SHOP_NAME_COLUMN));
             String goodsDescription = cursor.getString(cursor.getColumnIndex(DatabaseHelper.GOODS_DESCRIPTION_COLUMN));
             Float goodsPrice = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.GOODS_PRICE_COLUMN));
             Float  goodsRating = cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.GOODS_RATING_COLUMN));
-            byte[] photo = cursor.getBlob(5);
+            byte[] photo = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.GOODS_PHOTO_COLUMN));
             imageStream = new ByteArrayInputStream(photo);
             drawableImage = Drawable.createFromStream(imageStream, "");
-            products.add(new Product(goodsName, goodsDescription, goodsPrice, drawableImage, goodsRating));
+            products.add(new Product(goodsName, goodsDescription, goodsPrice, drawableImage, goodsRating, shopName));
         }
     }
 
@@ -249,6 +265,24 @@ public class ViewActivity extends Activity{
         if (view.getId() == R.id.but_record) {
             intent = new Intent(getApplicationContext(), RecordActivity.class);
             startActivity(intent);
+//        } if(view.getId() == R.id.buttonInfo) {
+//            try {
+//                lvMain.
+//                System.out.println("Mark = " + textInfo.getText());
+//                Cursor cursor = getCursor();
+//                intent = new Intent(this, GoodsActivity.class);
+//                intent.putExtra("goodsName", "Мишка");
+//                intent.putExtra("goodsPrice", 41.41f);
+//                intent.putExtra("goodsDescr", "Це моя мишка");
+//                intent.putExtra("shopName", "Цитрус");
+//                intent.putExtra("goodsPhoto", String.valueOf(getResources().getDrawable(R.drawable.photo)));
+//                intent.putExtra("goodsRating",3.4f);
+//                startActivity(intent);
+//            } catch (Exception ex) {
+////                System.out.println(ex.);
+//                ex.printStackTrace();
+//                Toast.makeText(this,"ІДІ НАХУЙ",Toast.LENGTH_SHORT).show();
+//            }
         }
 
     }
