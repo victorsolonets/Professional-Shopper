@@ -81,6 +81,7 @@ public class ViewActivity extends Activity {
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        onDestroy();
                         finish();
                     }
 

@@ -108,20 +108,23 @@ public class RecordActivity extends Activity {
                     galleryPic = thumbnailBitmap;
                 } else if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
-                    galleryPic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                    goodsPhoto.setImageBitmap(galleryPic);
-                }
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                    try {
+                        galleryPic = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        goodsPhoto.setImageBitmap(galleryPic);
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
 
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (NullPointerException ex) {
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+                catch (NullPointerException ex) {
                 ex.printStackTrace();
             }
-        
+
     }
 
 

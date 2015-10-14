@@ -38,12 +38,10 @@ public class DatabaseHelper extends SQLiteOpenHelper implements BaseColumns {
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
                           int version) {
         super(context, name, factory, version);
-        System.out.println("In Database helper constructor");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        System.out.println("In onCreate DB");
         db.execSQL(DATABASE_CREATE_SCRIPT);
 
     }
