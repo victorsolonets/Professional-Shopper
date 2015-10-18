@@ -83,7 +83,5 @@
         android:paddingTop="10dp"
         android:textColor="@android:color/holo_red_dark"/>
 
-
-
 </LinearLayout>
     </ScrollView>

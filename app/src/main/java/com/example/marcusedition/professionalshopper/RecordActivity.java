@@ -2,7 +2,7 @@ package com.example.marcusedition.professionalshopper;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -72,18 +72,10 @@ public class RecordActivity extends Activity {
                 goodsPhoto.setLayoutParams(params);
 
                 new AlertDialog.Builder(RecordActivity.this)
-                        .setIcon(android.R.drawable.alert_light_frame)
-                        .setTitle("Завантаження фото")
-                        .setMessage("Завантажити фото чи сфотографувати ?")
-                        .setPositiveButton("Фото", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                startActivityForResult(cameraIntent, CAMERA_RESULT);
-                            }
-
-                        })
-                        .setNeutralButton("Галерея", new DialogInterface.OnClickListener() {
+                        .setIcon(android.R.drawable.sym_contact_card)
+                        .setTitle("Вибір фото")
+                        .setMessage("Завантажити чи сфотографувати?")
+                        .setNegativeButton("Галерея", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -92,7 +84,15 @@ public class RecordActivity extends Activity {
                             }
 
                         })
-                        .setNegativeButton("Відміна", null)
+                        .setNeutralButton("Відміна", null)
+                        .setPositiveButton("Фото", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(cameraIntent, CAMERA_RESULT);
+                            }
+
+                        })
                         .show();
             }
         });

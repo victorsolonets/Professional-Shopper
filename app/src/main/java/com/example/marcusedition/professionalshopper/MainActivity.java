@@ -10,7 +10,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.load_page);
 
         Thread logoTimer = new Thread()
         {
@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
                         sleep(100);
                         logoTimer = logoTimer + 100;
                     }
-                    startActivity(new Intent(getApplicationContext(), ViewActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainMenuActivity.class));
                 }
                 catch (InterruptedException e)
                 {

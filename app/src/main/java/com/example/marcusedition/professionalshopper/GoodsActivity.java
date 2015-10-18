@@ -1,8 +1,8 @@
 package com.example.marcusedition.professionalshopper;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 /**
  * Created by victor on 06.10.15.
  */
-public class GoodsActivity extends Activity {
+public class GoodsActivity extends FragmentActivity {
 
     private TextView mTitle;
     private ImageView mPhoto;

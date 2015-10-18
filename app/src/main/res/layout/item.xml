@@ -59,7 +59,10 @@
             android:id="@+id/tvRating"
             android:focusableInTouchMode="true"
             android:paddingLeft="10dp"
-            />
+            android:foregroundTint="@android:color/holo_purple"
+            android:backgroundTint="#FFEB3B"
+            android:secondaryProgressTint="#FFEB3B"
+            android:progressTint="#FFEB3B"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -2,8 +2,6 @@ package com.example.marcusedition.professionalshopper;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -71,24 +69,7 @@ public class ViewActivity extends Activity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Вихід")
-                .setMessage("Ви впевнені, що хочете вийти?")
-                .setPositiveButton("Так", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onDestroy();
-                        finish();
-                    }
 
-                })
-                .setNegativeButton("Ні", null)
-                .show();
-    }
 
     private void initializationLocalFields() {
         mSpinner = (Spinner)findViewById(R.id.spinner);
@@ -262,11 +243,11 @@ public class ViewActivity extends Activity {
         }
     }
 
-    public void onClickButton(View view){
-        if (view.getId() == R.id.but_record) {
-            intent = new Intent(getApplicationContext(), RecordActivity.class);
-            startActivity(intent);
-        }
-    }
+//    public void onClickButton(View view){
+//        if (view.getId() == R.id.but_record) {
+//            intent = new Intent(getApplicationContext(), RecordActivity.class);
+//            startActivity(intent);
+//        }
+//    }
 }
 
