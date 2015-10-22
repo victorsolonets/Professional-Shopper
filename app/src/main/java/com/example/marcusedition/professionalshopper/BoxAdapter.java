@@ -21,15 +21,34 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Class to create special adapter for list products
+ */
 public class BoxAdapter extends BaseAdapter {
 
+    /**
+     * Context of out view
+     */
     private Context ctx;
+    /**
+     * Special LayoutInflater for list
+     */
     private LayoutInflater lInflater;
+    /**
+     * ArrayList for list product
+     */
     private ArrayList<Product> mListItems;
-    String [] result;
-    Context context;
-    int [] imageId;
+    /**
+     * Result array
+     */
+    private String [] result;
+    private int [] imageId;
 
+    /**
+     * Constructor for create list of products
+     * @param context
+     * @param products
+     */
     public BoxAdapter(Context context, ArrayList<Product> products) {
         ctx = context;
         mListItems = products;
@@ -38,24 +57,44 @@ public class BoxAdapter extends BaseAdapter {
     }
 
     // кол-во элементов
+    /**
+     * Get count of elements
+     * @return count of list item
+     */
     @Override
     public int getCount() {
         return mListItems.size();
     }
 
     // элемент по позиции
+    /**
+     * Get item from position
+     * @param position
+     * @return item
+     */
     @Override
     public Object getItem(int position) {
         return mListItems.get(position);
     }
 
-    // id по позиции
+    /**
+     * Get item id from position
+     * @param position
+     * @return item id
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
     // пункт списка
+    /**
+     * Get one view from list
+     * @param position position of view
+     * @param convertView
+     * @param parent our group
+     * @return one view from list
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // используем созданные, но не используемые view
@@ -83,10 +122,16 @@ public class BoxAdapter extends BaseAdapter {
         image.setLayoutParams(params);
 
         view.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method start when click in listview
+             * @param v
+             */
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent intent = new Intent(ctx, GoodsActivity.class);
+                /**
+                 * Відправляємо дані до інтенту, які там потім відображаються на окремій сторінці
+                 */
                 intent.putExtra("goodsName", p.title);
                 intent.putExtra("goodsPrice", p.price);
                 intent.putExtra("goodsDescr", p.describe);
@@ -105,11 +150,21 @@ public class BoxAdapter extends BaseAdapter {
         return view;
     }
 
-    // товар по позиции
-    Product getProduct(int position) {
+    /**
+     * Get product from position
+     * @param position of product
+     * @return Product
+     */
+    public Product getProduct(int position) {
         return ((Product) getItem(position));
     }
 
+
+    /**
+     * Get Layout Parameters for view image
+     * @param image what view we redesign parameters width and height
+     * @return parameters of new image in view
+     */
     public ViewGroup.LayoutParams getLayoutParams(TextView image) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) image.getContext()
@@ -118,6 +173,9 @@ public class BoxAdapter extends BaseAdapter {
         int height = displaymetrics.heightPixels;
         int width = displaymetrics.widthPixels;
         ViewGroup.LayoutParams params = image.getLayoutParams();
+        /**
+         * При зміні орієнтації екрану змінюються пропорції картинки
+         */
         if(Configuration.ORIENTATION_LANDSCAPE == ctx.getResources().getConfiguration().orientation) {
             params.height = height / 2;
             params.width = width / 3;

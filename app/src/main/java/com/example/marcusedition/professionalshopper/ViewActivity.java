@@ -2,8 +2,6 @@ package com.example.marcusedition.professionalshopper;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,9 +29,15 @@ import java.util.ArrayList;
 
 public class ViewActivity extends Activity {
 
+    /**
+     * Поля для роботи з БД
+     */
     private SQLiteDatabase mSqLiteDatabase;
-    private ListView lvMain;
     private SQLiteOpenHelper mDatabaseHelper;
+    /**
+     * Поля для роботи з елементом списку
+     */
+    private ListView lvMain;
     private BoxAdapter boxAdapter;
     private Spinner mSpinner;
     private SearchView mSearchView;
@@ -41,9 +45,12 @@ public class ViewActivity extends Activity {
     private ByteArrayInputStream imageStream;
     private Drawable drawableImage;
     private ArrayList<Product> products;
-    private Button buttonItem;
     private TextView textInfo;
 
+    /**
+     * Метод створення activity
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +66,9 @@ public class ViewActivity extends Activity {
 
     }
 
-
+    /**
+     * Метод обробки перезавантаження activity
+     */
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -71,24 +80,9 @@ public class ViewActivity extends Activity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Вихід")
-                .setMessage("Ви впевнені, що хочете вийти?")
-                .setPositiveButton("Так", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
-                .setNegativeButton("Ні", null)
-                .show();
-    }
-
+    /**
+     * Ініціалізація полів та введення залежностей
+     */
     private void initializationLocalFields() {
         mSpinner = (Spinner)findViewById(R.id.spinner);
         mDatabaseHelper = new DatabaseHelper(this, DatabaseHelper.DATABASE_NAME, null, 1);
@@ -96,6 +90,13 @@ public class ViewActivity extends Activity {
         mSearchView = (SearchView) findViewById(R.id.searchView);
     }
 
+    /**
+     * Фільтр для сортування даних БД за вибраним порядком
+     * @param order
+     * @param desk
+     * @return
+     * @throws SQLException
+     */
     public Cursor orderByFilter(String order, String desk) throws SQLException {
         String query = "SELECT " + DatabaseHelper._ID + "," +
                 DatabaseHelper.GOODS_NAME_COLUMN + "," +DatabaseHelper.SHOP_NAME_COLUMN + ","
@@ -117,6 +118,12 @@ public class ViewActivity extends Activity {
         return mCursor;
     }
 
+    /**
+     * Фільтр для пошуку даних в БД по введеним даним SELECT ...
+     * @param inputText
+     * @return
+     * @throws SQLException
+     */
     public Cursor searchByInputText(String inputText) throws SQLException {
         String query = "SELECT " + DatabaseHelper._ID + "," +
                 DatabaseHelper.GOODS_NAME_COLUMN + "," +DatabaseHelper.SHOP_NAME_COLUMN + ","
@@ -137,13 +144,20 @@ public class ViewActivity extends Activity {
         return mCursor;
     }
 
+    /**
+     * Створення опціонального меню
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    /**
+     * Установка конкретного фільтру, пошук по параметру який приходить від стрічки пошуку
+     */
     private void setFilters() {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -167,6 +181,10 @@ public class ViewActivity extends Activity {
             }
         });
 
+        /**
+         * Метод для фільтрування елементів списку по конкретному
+         * фільтру відповідно до її позиції
+         */
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -180,7 +198,7 @@ public class ViewActivity extends Activity {
                         break;
                     case 0:
                         try {
-                            orderByFilter(DatabaseHelper._ID, "");
+                            orderByFilter(DatabaseHelper.GOODS_DATE, "");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -210,6 +228,9 @@ public class ViewActivity extends Activity {
 
     }
 
+    /**
+     * Заповнення всіх елементів списку зчитуючи з БД і вставляючи в список
+     */
     private void fillAllItems() {
         Cursor cursor = getCursor();
         if (isDataBaseEmpty(cursor)) return;
@@ -221,6 +242,11 @@ public class ViewActivity extends Activity {
         cursor.close();
     }
 
+    /**
+     * Перевірка на пусту БД
+     * @param cursor
+     * @return
+     */
     private boolean isDataBaseEmpty(Cursor cursor) {
         if (cursor.getCount() == (0) || cursor.toString().equals("null")) {
             Toast.makeText(getBaseContext(), "База даних пуста. Зробіть будь ласка хоча б один запис.",
@@ -232,6 +258,10 @@ public class ViewActivity extends Activity {
         return false;
     }
 
+    /**
+     * Метод для отримання курсору , який необхідний для обходу по БД
+     * @return
+     */
     private Cursor getCursor() {
         return mSqLiteDatabase.query(DatabaseHelper.DATABASE_TABLE, new String[]{
                             DatabaseHelper._ID,
@@ -246,6 +276,11 @@ public class ViewActivity extends Activity {
                     null, null, null);
     }
 
+    /**
+     * Метод для зчитування з БД
+     * @param cursor
+     * @param products
+     */
     private void readFromDataBase(final Cursor cursor, ArrayList<Product> products) {
         while (cursor.moveToNext()) {
             String goodsName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.GOODS_NAME_COLUMN));
@@ -258,13 +293,6 @@ public class ViewActivity extends Activity {
             imageStream = new ByteArrayInputStream(photo);
             drawableImage = Drawable.createFromStream(imageStream, "");
             products.add(new Product(goodsName, goodsDescription, goodsPrice, drawableImage, goodsRating, shopName, date));
-        }
-    }
-
-    public void onClickButton(View view){
-        if (view.getId() == R.id.but_record) {
-            intent = new Intent(getApplicationContext(), RecordActivity.class);
-            startActivity(intent);
         }
     }
 }
