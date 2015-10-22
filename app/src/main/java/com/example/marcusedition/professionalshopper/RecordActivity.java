@@ -36,28 +36,38 @@ import java.util.Locale;
  */
 public class RecordActivity extends Activity {
 
+    /**
+     * Поля для вибору картинки або зробити фото
+     */
     public static final int GALLERY_REQUEST = 1;
     public static final int CAMERA_RESULT = 0;
+    /**
+     * Поля для роботи з БД
+     */
     private DatabaseHelper mDatabaseHelper;
     private SQLiteDatabase mSqLiteDatabase;
+    /**
+     * Поля для заповнення інформацією від користувача
+     */
     private ImageView goodsPhoto;
-    private Button changeImage;
     private EditText editGoodsName;
     private EditText editShopName;
     private EditText editGoodsPrice;
     private EditText editGoodsDescriprion;
     private RatingBar editGoodsRating;
     private Bitmap galleryPic = null;
+    private Button changeImage;
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    /**
+     * Метод для створення activity та заповнення залежностей
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record_activity);
         initializationLocalFields();
-
         changeImage.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -98,6 +108,13 @@ public class RecordActivity extends Activity {
         });
     }
 
+    /**
+     * Метод для обробки резульату запиту на кнопку додати фото,
+     * обробка помилок при можливих негараздах з даними
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -127,7 +144,9 @@ public class RecordActivity extends Activity {
 
     }
 
-
+    /**
+     * Ініціалазація всіх даних створення залежностей
+     */
     private void initializationLocalFields() {
         goodsPhoto = (ImageView)findViewById(R.id.goods_photo);
         editGoodsName = (EditText)findViewById(R.id.goods_name);
@@ -141,23 +160,35 @@ public class RecordActivity extends Activity {
     }
 
 
-
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    /**
+     * Обробка кнопки додати всі дані до БД
+     * @param v
+     */
     public void onClickButton(View v) {
         ContentValues newValues = new ContentValues();
 
+        /**
+         * Заповнюємо локальні змінні даними з полів заповненими користувачем
+         */
         String goodsNameFromEdit = String.valueOf(editGoodsName.getText());
         String shopNameFromEdit = String.valueOf(editShopName.getText());
         String goodsPriceFromEdit = String.valueOf(editGoodsPrice.getText());
         String goodsRatingFromEdit = String.valueOf(editGoodsRating.getRating());
         String goodsDescriptionFromEdit = String.valueOf(editGoodsDescriprion.getText());
 
+        /**
+         * Перевірка на пусте поле
+         */
         if (checkToEmptyText(goodsNameFromEdit, shopNameFromEdit, goodsPriceFromEdit, goodsDescriptionFromEdit))
             return;
-
+        /**
+         * Створюємо запис до БД
+         */
         writeIntoDB(newValues, goodsNameFromEdit, shopNameFromEdit, goodsPriceFromEdit, goodsRatingFromEdit, goodsDescriptionFromEdit);
 
+        /**
+         * Очищуємо поля після додавання
+         */
         editGoodsDescriprion.setText("");
         editGoodsPrice.setText("");
         editGoodsRating.setRating(0);
@@ -170,9 +201,18 @@ public class RecordActivity extends Activity {
         onStop();
     }
 
+    /**
+     * Метод для додавання запису до БД через допоміжний клас DBHelper
+     * @param newValues
+     * @param goodsNameFromEdit
+     * @param shopNameFromEdit
+     * @param goodsPriceFromEdit
+     * @param goodsRatingFromEdit
+     * @param goodsDescriptionFromEdit
+     */
     private void writeIntoDB(ContentValues newValues, String goodsNameFromEdit, String shopNameFromEdit, String goodsPriceFromEdit, String goodsRatingFromEdit, String goodsDescriptionFromEdit) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        System.out.println(galleryPic);
+
         if(galleryPic == null) {
             galleryPic = BitmapFactory.decodeResource(getResources(),
                     R.drawable.photo);
@@ -189,6 +229,10 @@ public class RecordActivity extends Activity {
         mSqLiteDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, newValues);
     }
 
+    /**
+     * Отримуємо поточну дату додавання
+     * @return
+     */
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -196,6 +240,14 @@ public class RecordActivity extends Activity {
         return dateFormat.format(date);
     }
 
+    /**
+     * Перевірка на пусті поля не заповнені користувачем
+     * @param goodsNameFromEdit
+     * @param shopNameFromEdit
+     * @param goodsPriceFromEdit
+     * @param goodsDescriptionFromEdit
+     * @return
+     */
     private boolean checkToEmptyText(String goodsNameFromEdit, String shopNameFromEdit, String goodsPriceFromEdit, String goodsDescriptionFromEdit) {
         if (goodsNameFromEdit.equals("") || shopNameFromEdit.equals("") || goodsPriceFromEdit.equals("")
                 || goodsDescriptionFromEdit.equals("")) {
@@ -206,9 +258,11 @@ public class RecordActivity extends Activity {
         return false;
     }
 
+    /**
+     * Метод для обробки паузи
+     */
     @Override
     protected void onPause() {
         super.onPause();
-//        Toast.makeText(getApplicationContext(), "Дані не збережені", Toast.LENGTH_SHORT).show();
     }
 }

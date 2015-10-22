@@ -7,15 +7,27 @@ import android.graphics.drawable.Drawable;
  */
 public class Product {
 
-    String title;
-    String describe;
-    Float price;
-    Drawable image;
-    float rating;
-    String shop;
-    String date;
+    /**
+     * Поля для заповнення BoxAdapter (адаптеру для перегляду)
+     */
+    private String title;
+    private String describe;
+    private Float price;
+    private Drawable image;
+    private float rating;
+    private String shop;
+    private String date;
 
-
+    /**
+     * Конструктор для заповнення всіх полів
+     * @param _title
+     * @param _describe
+     * @param _price
+     * @param _image
+     * @param _rating
+     * @param _shop
+     * @param _date
+     */
     public Product (String _title, String _describe, float _price, Drawable _image, float _rating, String _shop, String _date) {
         title = _title;
         describe = _describe;
@@ -26,6 +38,13 @@ public class Product {
         date = _date;
     }
 
+    /**
+     * Конструктор для заповнення всіх полів
+     * @param _title
+     * @param _describe
+     * @param _price
+     * @param _rating
+     */
     public Product (String _title, String _describe, float _price, float _rating ) {
         title = _title;
         describe = _describe;

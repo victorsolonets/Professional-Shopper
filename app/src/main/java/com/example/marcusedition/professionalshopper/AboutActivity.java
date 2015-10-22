@@ -9,6 +9,10 @@ import android.os.Bundle;
  */
 public class AboutActivity extends Activity {
 
+    /**
+     * Method to create View for about activity
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
