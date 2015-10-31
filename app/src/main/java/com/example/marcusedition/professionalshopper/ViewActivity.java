@@ -1,18 +1,15 @@
 package com.example.marcusedition.professionalshopper;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -56,7 +53,6 @@ public class ViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_activity);
         initializationLocalFields();
-        System.out.println(buttonItem);
         fillAllItems();
         try {
             lvMain.isHovered();

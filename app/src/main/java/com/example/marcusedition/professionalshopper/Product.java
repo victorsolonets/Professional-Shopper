@@ -10,13 +10,13 @@ public class Product {
     /**
      * Поля для заповнення BoxAdapter (адаптеру для перегляду)
      */
-    private String title;
-    private String describe;
-    private Float price;
-    private Drawable image;
-    private float rating;
-    private String shop;
-    private String date;
+    public String title;
+    public String describe;
+    public Float price;
+    public Drawable image;
+    public float rating;
+    public String shop;
+    public String date;
 
     /**
      * Конструктор для заповнення всіх полів

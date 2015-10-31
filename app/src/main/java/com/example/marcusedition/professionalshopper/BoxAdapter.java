@@ -114,7 +114,7 @@ public class BoxAdapter extends BaseAdapter {
         ratingBar.setStepSize(0.5f);
         ratingBar.setEnabled(false);
         TextView tvPrice = ((TextView) view.findViewById(R.id.tvPrice));
-        tvPrice.setText(p.price + "$");
+        tvPrice.setText(p.price + " $");
         final ImageView image = ((ImageView) view.findViewById(R.id.ivImage));
         image.setImageDrawable(p.image);
         ((TextView) view.findViewById(R.id.Date)).setText(p.date);
